@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body>
+	<h:form>
+		<p:growl id="growl" life="4000" showDetail="true" />
+		<h3>Create CRUD Spring JSF PrimeFaces with PostgreSQL</h3>
+		<p:panel>
+			<f:facet name="header">
+                New Bus Schedules
+                <p:commandButton action="#{busController.refresh()}"
+					icon="pi pi-refresh" update="@form" process="@this"/>
+			</f:facet>
+			<h:panelGrid columns="2">
+				<p:outputLabel value="Bus Operation Name" />
+				<p:inputText value="#{busController.busVo.busOperationName}"
+					required="true" validatorMessage="Please fill Bus Operation Name" />
+				<p:outputLabel value="From Bus Terminal" />
+				<p:inputText value="#{busController.busVo.fromBusTerminal}"
+					required="true" validatorMessage="Please fill From Bus Terminal" />
+				<p:outputLabel value="To Bus Terminal" />
+				<p:inputText value="#{busController.busVo.toBusTerminal}"
+					required="true" validatorMessage="Please Fill To Bus Terminal" />
+				<p:outputLabel value="Scheduled DateTime" />
+				<p:calendar id="scheduledDateTime"
+					value="#{busController.busVo.scheduledDateTime}" required="false"
+					pattern="yyyy-MM-dd HH:mm "
+					mindate="#{busController.busVo.scheduledDateTime}"
+					validatorMessage="Please Fill Schedule Date Time" />
+				<p:outputLabel value="Estimated DateTime" />
+				<p:calendar id="estimatedDateTime"
+					value="#{busController.busVo.estimatedDateTime}"
+					pattern="yyyy-MM-dd HH:mm"
+					mindate="#{busController.busVo.estimatedDateTime}"
+					validatorMessage="Please Fill Estimated Date Time" />
+				<p:outputLabel value="Actual DateTime" />
+				<p:calendar id="actualDateTime"
+					value="#{busController.busVo.actualDateTime}"
+					validatorMessage="Please Fill Actual Date Time" pattern="yyyy-MM-dd HH:mm"
+					mindate="#{busController.busVo.actualDateTime}" />
+				<p:outputLabel />
+				<p:commandButton value="Save" action="#{busController.save()}"
+					update="@form" process="@form" />
+			</h:panelGrid>
+		</p:panel>
+
+		<br />
+
+		<p:panel>
+			<f:facet name="header">
+                List Bus
+                <p:commandButton action="#{busController.fetchAll()}"
+					icon="pi pi-refresh" update="@form" process="@this" />
+			</f:facet>
+			<h4>List Data From Database</h4>
+			<p:dataTable var="bus" value="#{busController.listBusVo}" rows="5"
+				paginator="true" rowIndexVar="index">
+
+				<p:column headerText="No" width="10%" style="text-align:center">
+					<h:outputText value="#{index+1}" />
+				</p:column>
+
+				<p:column headerText="Bus Operation Name" style="text-align:center">
+					<h:outputText value="#{bus.busOperationName}" />
+				</p:column>
+
+				<p:column headerText="From Bus Terminal" style="text-align:center">
+					<h:outputText value="#{bus.fromBusTerminal}" />
+				</p:column>
+
+				<p:column headerText="To Bus Terminal" style="text-align:center">
+					<h:outputText value="#{bus.toBusTerminal}" />
+				</p:column>
+
+				<p:column headerText="Scheduled DateTime" style="text-align:center">
+					<h:outputText value="#{bus.scheduledDateTime}">
+						<f:convertDateTime locale="en" timeStyle="short" type="both"
+							dateStyle="full" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Estimated DateTime" style="text-align:center">
+					<h:outputText value="#{bus.estimatedDateTime}">
+						<f:convertDateTime locale="en" timeStyle="short" type="both"
+							dateStyle="full" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="ActualDateTime" style="text-align:center">
+					<h:outputText value="#{bus.actualDateTime}">
+						<f:convertDateTime locale="en" timeStyle="short" type="both"
+							dateStyle="full" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column headerText="Options" width="10%" style="text-align:center">
+					<p:commandButton id="buttonEdit" icon="pi pi-pencil"
+						action="#{busController.edit(bus)}" update="@form" process="@this" />
+					<p:tooltip id="toolTipFadeEdit" for="buttonEdit" value="Edit"
+						position="top" />
+					<p:tooltip id="toolTipFadeDelete" for="buttonDelete" value="Delete"
+						position="top" />
+					<p:commandButton id="buttonDelete" icon="pi pi-times"
+						action="#{busController.delete(bus)}" update="@form"
+						process="@this">
+						<p:confirm header="Confirmation" message="Are you sure?"
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			<p:commandButton value="Yes" type="button"
+				styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+			<p:commandButton value="No" type="button"
+				styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+		</p:confirmDialog>
+		&copy; Developer <!-- &copy; ndms.arifin@gmail.com -->
+	</h:form>
+
+</h:body>
+</html>
